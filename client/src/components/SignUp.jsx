@@ -1,6 +1,7 @@
 import React ,{useState} from "react";
-import { NavLink } from "react-router-dom";
-import { axios } from 'axios';
+import axios  from 'axios';
+import { motion } from "framer-motion";
+import {buttonVariant } from "../variants/variants"
 
 const SignUp = () => {
  const [email,setEmail]= useState("")
@@ -8,13 +9,14 @@ const SignUp = () => {
  const [errmessage,setErrMessage] =useState("")
 
 
- const handleSigUp = async()=>{
+ const handleSignUp = async()=>{
    try {
       const res = await axios.post("/signUp",{
      email,
      password
    })
-   console.log(res.data)
+   if(res.data==="signup-succesful"){
+    window.location = "/";}
    } catch (err) {
      setErrMessage(err.message)
      console.log(err.message)
@@ -24,18 +26,32 @@ const SignUp = () => {
 
   return (
     <>
-     
-      <div>
-        <label>Email</label>
+      <motion.div
+        variants={buttonVariant}
+        initial={{x:"-100vw",opacity:0}}
+        animate="animate">
         <input type="email" placeholder="enter email" onChange={(e)=>setEmail(e.target.value)}></input>
-      </div>
-      <div>
-        <label>Password</label>
+      </motion.div>
+      <motion.div
+        variants={buttonVariant}
+        initial={{x:"100vw",opacity:0}}
+        animate="animate"
+      >
+   
         <input type="password" placeholder="enter password" onChange={(e)=>setPassword(e.target.value)}></input>
-      </div>
-      <NavLink to="/category" onClick={handleSigUp}>
-        <button>Sign up</button>
-      </NavLink>
+      </motion.div>
+   
+      <motion.button
+              variants={buttonVariant}
+              initial={{x:"-100vw",opacity:0}}
+              animate="animate"
+              whileHover="onHover"
+              transition={{duration:1,type:"spring",stiffness:120}}
+                className="answer"
+               onClick={handleSignUp}
+              >
+             Sign Up
+        </motion.button>
     </>
   );
 };

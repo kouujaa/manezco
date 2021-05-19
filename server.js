@@ -3,14 +3,15 @@ const app = express();
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const morgan = require("morgan");
+const cors = require("cors");
+app.use(cors());
 
 const DBURI =
   "mongodb+srv://jjhok:jjhok@mydb.9j7ob.mongodb.net/takehome?retryWrites=true&w=majority";
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 3001;
 const User = require("./model/User");
 
-app.use(morgan("tiny"));
+
 app.use(express.json());
 
 app.post("/signUp", async (req, res) => {
@@ -27,30 +28,37 @@ app.post("/signUp", async (req, res) => {
     });
     newUser.save().then((data) => {
       var token = jwt.sign({ id: data._id, role: "User" }, "ManezCo");
-      return res.send(token);
+      return res
+        .header("x-authentication-token", token)
+        .cookie("token", token)
+        .send("signup-succesful");
+      
     });
   } catch (err) {
-    return res.status(200).send("server error");
+    console.log("from user signup", err.message);
+    return res.status(500).redirect("/login");
   }
 });
 
 app.post("/login", async (req, res) => {
-    console.log(req.body)
   const { email, password } = req.body;
   try {
     const data = await User.findOne({ email });
     if (!data) {
       return res.status(400).send("inalid credentials");
     }
-    const isPassword = await bcrypt.compare(password,data.password);
-    if(!isPassword){
-        return res.status(400).send("inalid credentials");
+    const isPassword = await bcrypt.compare(password, data.password);
+    if (!isPassword) {
+      return res.status(400).send("inalid credentials");
     }
-   var token = jwt.sign({ id: data._id, role: "User" }, "ManezCo");
-   return res.send(token);
+    var token = jwt.sign({ id: data._id, role: "User" }, "ManezCo");
+    return res
+      .header("x-authentication-token", token)
+      .cookie("token", token)
+      .send("login-succesful");
   } catch (err) {
-      console.log(err.message)
-    return res.status(400).send("server error");
+    console.log("from user signup", err.message);
+    return res.status(500).redirect("/login");
   }
 });
 

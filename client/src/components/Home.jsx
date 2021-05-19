@@ -1,12 +1,13 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const Home = () => {
   return (
     <>
-      <NavLink to="/category" onClick={() => {}}>
+      <motion.NavLink to="/category" onClick={() => {}}>
         <button>start game</button>
-      </NavLink>
+      </motion.NavLink>
     </>
   );
 };

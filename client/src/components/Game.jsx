@@ -1,5 +1,10 @@
 import React, { useEffect } from "react";
 import { Redirect } from "react-router-dom";
+import { motion } from "framer-motion";
+
+
+import Loader from "./Loader";
+import {buttonVariant } from "../variants/variants"
 
 const Game = ({
   getQuestions,
@@ -19,12 +24,20 @@ const Game = ({
     <>
       {fquestions[currentQuestion] ? (
         <>
-          <p className="question">
+          <motion.p 
+             initial={{y:"-100vh",opacity:0}}
+             animate={{y:0,opacity:1}}
+             className="question">
             Question: {fquestions[currentQuestion].questionText}
-          </p>
+          </motion.p>
           <div className="answers">
             {fquestions[currentQuestion].answerOptions.map((e) => (
-              <div
+              <motion.button
+              variants={buttonVariant}
+              initial={{x:"-100vw",opacity:0}}
+              animate="animate"
+              whileHover="onHover"
+              transition={{duration:1,type:"spring",stiffness:120}}
                 key={e.answerText}
                 className="answer"
                 onClick={() => {
@@ -32,13 +45,19 @@ const Game = ({
                 }}
               >
                 <label>{e.answerText}</label>
-              </div>
+              </motion.button>
             ))}
           </div>
         </>
-      ) : null}
-      <button>back to prev</button>
-      <button>next</button>
+      ) : (
+        (
+        (
+        <Loader />
+      )
+      )
+      )}
+      {/* <button>back to prev</button> */}
+      {/* <button>next</button> */}
       {answered == 10 && <Redirect to="/result" />}
     </>
   );

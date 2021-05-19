@@ -84,6 +84,19 @@ button {
   cursor: pointer;
   opacity: 0.7;
 }
+button:hover {
+  color: rgba(44, 228, 75,0.7);
+  border-color: rgba(44, 228, 75,0.7);
+}
+button:active {
+  color: rgba(44, 228, 75,1);
+  border-color: rgba(44, 228, 75,1);
+  background-color:  rgba(44, 228, 75,0.3)
+}
+button:active {
+
+  background-color:  rgba(228, 87, 44, 0.3)
+}
 .container {
   max-width: 300px;
   margin: 100px auto 40px;

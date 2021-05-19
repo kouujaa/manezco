@@ -1,41 +1,79 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
+import axios from "axios";
+import { motion } from "framer-motion";
+import { buttonVariant } from "../../variants/variants";
 import { NavLink } from "react-router-dom";
-import axios  from 'axios';
 
 const Login = () => {
-  const [email,setEmail]= useState("")
-  const [password,setPassword]= useState("")
-  const [errmessage,setErrMessage] =useState("")
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errmessage, setErrMessage] = useState("");
 
-  const handleSigIn = async()=>{
+  const handleSignIn = async () => {
     try {
-       const token = await axios.post("/login",{
-      email,
-      password
-    })
-    console.log(token)
-
-    localStorage.setItem("token", token.data);
-    // window.location = "/";
-
+      const token = await axios.post("/login", {
+        email,
+        password,
+      });
+    if(token.data==="login-succesful"){
+      window.location = "/";}
     } catch (err) {
-      setErrMessage(err.message)
-      console.log(err.message)
+      setErrMessage(err.message);
+      console.log(err.message);
     }
-  
-  }
+  };
   return (
     <>
-     <div>
-        <label>Email</label>
-        <input type="email" placeholder="enter email" onChange={(e)=>setEmail(e.target.value)}></input>
-      </div>
-      <div>
-        <label>Password</label>
-        <input type="password" placeholder="enter password" onChange={(e)=>setPassword(e.target.value)}></input>
-      </div>
-        <button onClick={handleSigIn}>Login</button>
-     
+      <motion.div
+        variants={buttonVariant}
+        initial={{ x: "-100vw", opacity: 0 }}
+        animate="animate"
+      >
+        <input
+          type="email"
+          placeholder="enter email"
+          onChange={(e) => setEmail(e.target.value)}
+        ></input>
+      </motion.div>
+      <motion.div
+        variants={buttonVariant}
+        initial={{ x: "100vw", opacity: 0 }}
+        animate="animate"
+      >
+        <input
+          type="password"
+          placeholder="enter password"
+          onChange={(e) => setPassword(e.target.value)}
+        ></input>
+      </motion.div>
+
+      <motion.button
+        variants={buttonVariant}
+        initial={{ x: "-100vw", opacity: 0 }}
+        animate="animate"
+        whileHover="onHover"
+        transition={{ duration: 1, type: "spring", stiffness: 120 }}
+        className="answer"
+        onClick={handleSignIn}
+      >
+        Login
+      </motion.button>
+      <br></br>
+      <br></br>
+      <h3 >OR</h3>
+      <NavLink to="/signup">
+        <motion.button
+          variants={buttonVariant}
+          initial={{ x: "100vw", opacity: 0 }}
+          animate="animate"
+          whileHover="onHover"
+          transition={{ duration: 1, type: "spring", stiffness: 120 }}
+          className="answer"
+          onClick={handleSignIn}
+        >
+          Sign Up
+        </motion.button>
+      </NavLink>
     </>
   );
 };

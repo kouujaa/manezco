@@ -1,9 +1,11 @@
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
+const path = require("path");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const cors = require("cors");
+const morgan = require("morgan");
 app.use(cors());
 
 const DBURI =
@@ -13,8 +15,11 @@ const User = require("./model/User");
 
 
 app.use(express.json());
+app.use(morgan("tiny"));
 
-app.post("/signUp", async (req, res) => {
+
+
+app.post("/createAccount", async (req, res) => {
   const { email, password } = req.body;
   try {
     const data = await User.findOne({ email });
@@ -32,7 +37,6 @@ app.post("/signUp", async (req, res) => {
         .header("x-authentication-token", token)
         .cookie("token", token)
         .send("signup-succesful");
-      
     });
   } catch (err) {
     console.log("from user signup", err.message);
@@ -40,7 +44,7 @@ app.post("/signUp", async (req, res) => {
   }
 });
 
-app.post("/login", async (req, res) => {
+app.post("/accessAcount", async (req, res) => {
   const { email, password } = req.body;
   try {
     const data = await User.findOne({ email });

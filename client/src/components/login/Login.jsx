@@ -11,7 +11,7 @@ const Login = () => {
 
   const handleSignIn = async () => {
     try {
-      const token = await axios.post("/login", {
+      const token = await axios.post("/accessAcount", {
         email,
         password,
       });

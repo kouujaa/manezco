@@ -11,10 +11,10 @@ const SignUp = () => {
 
  const handleSignUp = async()=>{
    try {
-      const res = await axios.post("/signUp",{
-     email,
-     password
-   })
+      const res = await axios.post("/createAccount", {
+        email,
+        password,
+      });
    if(res.data==="signup-succesful"){
     window.location = "/";}
    } catch (err) {

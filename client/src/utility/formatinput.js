@@ -3,14 +3,14 @@ const toquestion = (data = []) => {
 
   data.forEach((e) => {
     let temparr = [];
-    let questionText = e.question;
+    let questionText = atob(e.question);
 
     temparr = e.incorrect_answers.map((e) => {
-      return { answerText: e, isCorrect: false, choosen: false };
+      return { answerText: atob(e), isCorrect: false, choosen: false };
     });
     let random = Math.floor(Math.random() * 4);
     temparr.splice(random, 0, {
-      answerText: e.correct_answer,
+      answerText: atob(e.correct_answer),
       isCorrect: true,
       choosen: false,
     });

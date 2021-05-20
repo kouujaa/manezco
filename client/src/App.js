@@ -60,7 +60,7 @@ function App({ cookies }) {
       "https://opentdb.com/api_token.php?command=request"
     );
     const res = await axios.get(
-      `https://opentdb.com/api.php?amount=10&category=${category}&difficulty=${difficulty}&type=multiple&token=${tok.data.token}`
+      `https://opentdb.com/api.php?amount=10&category=${category}&difficulty=${difficulty}&type=multiple&encode=base64&token=${tok.data.token}`
     );
     setShowScore(true);
     setQuestions(res.data.results);
